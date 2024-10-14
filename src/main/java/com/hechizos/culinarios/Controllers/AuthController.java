@@ -52,9 +52,8 @@ public class AuthController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
         final Date expiresAt = jwtTokenUtil.getExpirationDateFromToken(token);
-        Long idUser = userService.findOneByEmail(req.getEmail()).getIdUser();
-        String email = userService.findOneByEmail(req.getEmail()).getEmail();
-        return new ResponseEntity<>(new JwtResponse(token, idUser, email, expiresAt), HttpStatus.OK);
+        UserDto user = convertToDto(userService.findOneByEmail(req.getEmail()));
+        return new ResponseEntity<>(new JwtResponse(token, expiresAt, user), HttpStatus.OK);
     }
 
     private ResponseEntity<String> authenticate(String username, String password) throws Exception {

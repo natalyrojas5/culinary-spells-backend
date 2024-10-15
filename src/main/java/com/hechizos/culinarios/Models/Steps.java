@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SourceType;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,9 +28,10 @@ public class Steps {
     private Long idStep;
 
     @Column(name = "name", length = 20, nullable = false)
+    @NotNull(message = "Debe agregar un nombre")
     private String name;
 
-    @Column(name = "description", length = 200, nullable = false)
+    @Column(name = "description", length = 200, nullable = true)
     private String detail;
 
     @ManyToOne
@@ -37,6 +39,7 @@ public class Steps {
     private Recipe recipe;
 
     @Column(name = "ordernum", nullable = false)
+    @NotNull(message = "Debe agregar un orden")
     private Integer orderNum;
 
     @Column(name = "created_at", nullable = true)

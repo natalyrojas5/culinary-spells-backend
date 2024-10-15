@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RecipeTypesDto {
 
+    private Long idRecipeType;
     private String name;
 }

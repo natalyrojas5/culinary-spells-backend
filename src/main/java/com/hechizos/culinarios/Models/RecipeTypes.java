@@ -25,7 +25,4 @@ public class RecipeTypes {
     @Column(name = "detail", length = 200, nullable = false, unique = true)
     private String detail;
 
-    @OneToOne(mappedBy = "recipeTypes", cascade = CascadeType.ALL)
-    private Recipe recipe;
-
 }

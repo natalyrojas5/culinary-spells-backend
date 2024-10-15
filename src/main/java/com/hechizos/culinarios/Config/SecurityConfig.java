@@ -62,6 +62,8 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher("/login")).permitAll()
                         .requestMatchers(antMatcher("/register")).permitAll()
                         .requestMatchers(antMatcher("/country")).permitAll()
+                        .requestMatchers(antMatcher("/recipe/all")).permitAll()
+                        .requestMatchers(antMatcher("/recipe/all/own")).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint))

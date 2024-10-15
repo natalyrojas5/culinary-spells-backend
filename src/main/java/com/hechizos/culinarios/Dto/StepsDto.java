@@ -9,7 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RecipeTypesDto {
+public class StepsDto {
 
     private String name;
+
+    private String detail;
+
+    private Integer orderNum;
 }

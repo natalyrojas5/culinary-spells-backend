@@ -25,13 +25,16 @@ public class Images {
     private Long idImage;
 
     @Column(name = "idcloudinary", nullable = false, unique = true)
-    private Long idCloudinary;
+    private String idCloudinary;
 
     @Column(name = "link", length = 150, nullable = false, unique = true)
     private String link;
 
     @Column(name = "path", length = 50, nullable = false, unique = true)
     private String path;
+
+    @Column(name = "major", nullable = true)
+    private Integer major;
 
     @ManyToOne
     @JoinColumn(name = "idrecipe", nullable = false, foreignKey = @ForeignKey(name = "fk_recipe_image"))

@@ -13,5 +13,7 @@ public class ImageDto {
 
     private Long idImage;
 
+    private Integer major;
+
     private String link;
 }

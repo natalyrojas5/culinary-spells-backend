@@ -43,7 +43,7 @@ public class User {
     @NotNull(message = "La contraseña es obligatoria")
     private String password;
 
-    @Size(min = 5, max = 50, message = "El nombre debe tener entre 5 y 50 caracteres")
+    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     @Column(name = "name", length = 50, nullable = false)
     @NotNull(message = "El nombre es obligatorio")
     private String name;
@@ -51,9 +51,8 @@ public class User {
     @Column(name = "lastname", length = 50, nullable = true)
     private String lastname;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "idcountry", nullable = false, foreignKey = @ForeignKey(name = "fk_country_user"))
-    @NotNull(message = "Debe seleccionar un país")
     private Country country;
 
     @Column(name = "gender", length = 1, nullable = false)

@@ -37,7 +37,4 @@ public class Country {
     @Column(name = "phonecode", length = 5, nullable = true)
     private Integer phoneCode;
 
-    @OneToOne(mappedBy = "country", cascade = CascadeType.ALL)
-    private User user;
-
 }

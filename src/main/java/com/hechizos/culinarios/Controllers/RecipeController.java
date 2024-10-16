@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -132,6 +133,22 @@ public class RecipeController {
         List<RecipeDto> updatedRecipeDtoList = new ArrayList<>();
         updatedRecipeDtoList.add(updatedRecipeDto);
         return ResponseEntity.ok(new GenericResponseRecord<>(200, "success", new ArrayList<>(updatedRecipeDtoList)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<GenericResponseRecord<RecipeDto>> delete(@RequestHeader("Authorization") String token,
+            @PathVariable("id") Long id) throws Exception {
+        Long userId = JwtTokenDecoder.getUserId(token);
+        User user = userService.findByIdUser(userId);
+        Recipe recipe = recipeService.readById(id);
+        if (!recipe.getUser().equals(user)) {
+            return ResponseEntity.ok(new GenericResponseRecord<>(403, "Forbidden", new ArrayList<>()));
+        }
+        for (Images image : recipe.getImages()) {
+            cloudinaryService.delete(image.getIdCloudinary());
+        }
+        recipeService.delete(id);
+        return ResponseEntity.ok(new GenericResponseRecord<>(200, "success", new ArrayList<>()));
     }
 
     private RecipeSimpleDto convertToDto(Recipe obj) {

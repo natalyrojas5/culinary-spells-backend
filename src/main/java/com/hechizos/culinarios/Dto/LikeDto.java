@@ -1,7 +1,5 @@
 package com.hechizos.culinarios.Dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -12,14 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RecipeSimpleDto {
-    private String name;
+public class LikeDto {
 
-    private String detail;
+    private Long idLike;
 
     private Long count;
 
-    private Boolean isLike;
+    private RecipeDto recipeDto;
 
-    private List<ImageDto> images;
+    private UserDto userDto;
 }

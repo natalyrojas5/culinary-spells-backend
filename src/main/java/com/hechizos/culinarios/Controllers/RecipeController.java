@@ -23,10 +23,12 @@ import com.hechizos.culinarios.Dto.RecipeSimpleDto;
 import com.hechizos.culinarios.Dto.StepsDto;
 import com.hechizos.culinarios.Exception.GenericResponseRecord;
 import com.hechizos.culinarios.Models.Images;
+import com.hechizos.culinarios.Models.Like;
 import com.hechizos.culinarios.Models.Recipe;
 import com.hechizos.culinarios.Models.Steps;
 import com.hechizos.culinarios.Models.User;
 import com.hechizos.culinarios.Services.ImagesService;
+import com.hechizos.culinarios.Services.LikeService;
 import com.hechizos.culinarios.Services.RecipeService;
 import com.hechizos.culinarios.Services.StepsService;
 import com.hechizos.culinarios.Services.UserService;
@@ -43,13 +45,16 @@ public class RecipeController {
     private final ImagesService imagesService;
     private final StepsService stepsService;
     private final UserService userService;
+    private final LikeService likeService;
     private final CloudinaryService cloudinaryService;
     @Qualifier("defaultMapper")
     private final ModelMapper modelMapper;
 
     @GetMapping("/all")
-    public ResponseEntity<GenericResponseRecord<RecipeSimpleDto>> readAll() throws Exception {
-        List<RecipeSimpleDto> list = recipeService.readAll().stream().map(this::convertToDto).toList();
+    public ResponseEntity<GenericResponseRecord<RecipeSimpleDto>> readAllLogued(
+            @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
+        List<RecipeSimpleDto> list = recipeService.readAll().stream().map(recipe -> convertToDtoLogued(recipe, token))
+                .toList();
         return ResponseEntity.ok(new GenericResponseRecord<>(200, "success", new ArrayList<>(list)));
     }
 
@@ -153,7 +158,29 @@ public class RecipeController {
 
     private RecipeSimpleDto convertToDto(Recipe obj) {
         Optional<Images> majorImage = imagesService.findMajorImageByRecipe(obj);
+        Long count = likeService.countByRecipe(obj);
         RecipeSimpleDto dto = modelMapper.map(obj, RecipeSimpleDto.class);
+        dto.setCount(count);
+        majorImage.ifPresent(image -> {
+            dto.setImages(List.of(modelMapper.map(image, ImageDto.class)));
+        });
+        return dto;
+    }
+
+    private RecipeSimpleDto convertToDtoLogued(Recipe obj, @RequestHeader("Authorization") String token) {
+        Optional<Images> majorImage = imagesService.findMajorImageByRecipe(obj);
+
+        Long count = likeService.countByRecipe(obj);
+        RecipeSimpleDto dto = modelMapper.map(obj, RecipeSimpleDto.class);
+        if (token != null && !token.isEmpty()) {
+            Long userId = JwtTokenDecoder.getUserId(token);
+            User user = userService.findByIdUser(userId);
+            Like like = likeService.findByRecipeAndUser(obj, user);
+            if (like != null) {
+                dto.setIsLike(true);
+            }
+        }
+        dto.setCount(count);
         majorImage.ifPresent(image -> {
             dto.setImages(List.of(modelMapper.map(image, ImageDto.class)));
         });

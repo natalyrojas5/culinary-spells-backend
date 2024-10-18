@@ -23,6 +23,8 @@ public class RecipeDto {
 
     private Long count;
 
+    private Boolean isLike;
+
     private String cookingTime;
 
     private Long recipeTypes;

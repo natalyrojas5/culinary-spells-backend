@@ -24,5 +24,7 @@ public class RecipeSimpleDto {
 
     private Boolean isLike;
 
+    private UserDto user;
+
     private List<ImageDto> images;
 }

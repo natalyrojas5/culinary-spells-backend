@@ -65,12 +65,38 @@ public class RecipeController {
 
     @GetMapping("/all/own")
     public ResponseEntity<GenericResponseRecord<RecipeSimpleDto>> readAllOwn(
-            @RequestHeader("Authorization") String token)
+            @RequestHeader(value = "Authorization", required = false) String token)
             throws Exception {
         Long userId = JwtTokenDecoder.getUserId(token);
         User user = userService.findByIdUser(userId);
-        List<RecipeSimpleDto> list = recipeService.findByUser(user).stream().map(this::convertToDto).toList();
+        List<RecipeSimpleDto> list = recipeService.findByUser(user).stream()
+                .map(recipe -> convertToDtoLogued(recipe, token))
+                .toList();
         return ResponseEntity.ok(new GenericResponseRecord<>(200, "success", new ArrayList<>(list)));
+    }
+
+    @GetMapping("/top-recipe")
+    public ResponseEntity<GenericResponseRecord<RecipeSimpleDto>> readTopRecipe(
+            @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
+        Long recipeId = likeService.findMostLikedRecipe();
+        Recipe recipe = recipeService.readById(recipeId);
+        RecipeSimpleDto recipeDto = convertToDtoLogued(recipe, token);
+        List<RecipeSimpleDto> recipeDtoList = new ArrayList<>();
+        recipeDtoList.add(recipeDto);
+        return ResponseEntity.ok(new GenericResponseRecord<>(200, "success", new ArrayList<>(recipeDtoList)));
+    }
+
+    @GetMapping("/top-recipes")
+    public ResponseEntity<GenericResponseRecord<RecipeSimpleDto>> readTopRecipes(
+            @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
+        List<Long> recipeIds = likeService.findMostLikedRecipes();
+        List<RecipeSimpleDto> recipeDtoList = new ArrayList<>();
+        for (Long recipeId : recipeIds) {
+            Recipe recipe = recipeService.readById(recipeId);
+            RecipeSimpleDto recipeDto = convertToDtoLogued(recipe, token);
+            recipeDtoList.add(recipeDto);
+        }
+        return ResponseEntity.ok(new GenericResponseRecord<>(200, "success", recipeDtoList));
     }
 
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -113,7 +139,8 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GenericResponseRecord<RecipeDto>> readById(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<GenericResponseRecord<RecipeDto>> readById(@PathVariable("id") Long id,
+            @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
         Recipe recipe = recipeService.readById(id);
         Long recipeTypeName = recipe.getRecipeTypes();
         Country countryName = recipe.getUser().getCountry();
@@ -125,6 +152,14 @@ public class RecipeController {
         recipeDto.setRecipeTypeName(recipeTypeNameStr);
         recipeDto.setCount(count);
         recipeDto.getUser().setCountryName(countryNameStr);
+        if (token != null && !token.isEmpty()) {
+            Long userId = JwtTokenDecoder.getUserId(token);
+            User user = userService.findByIdUser(userId);
+            Like like = likeService.findByRecipeAndUser(recipe, user);
+            if (like != null) {
+                recipeDto.setIsLike(true);
+            }
+        }
         List<RecipeDto> recipeDtoList = new ArrayList<>();
         recipeDtoList.add(recipeDto);
         return ResponseEntity.ok(new GenericResponseRecord<>(200, "success", new ArrayList<>(recipeDtoList)));
@@ -170,20 +205,19 @@ public class RecipeController {
         return ResponseEntity.ok(new GenericResponseRecord<>(200, "success", new ArrayList<>()));
     }
 
-    private RecipeSimpleDto convertToDto(Recipe obj) {
-        Optional<Images> majorImage = imagesService.findMajorImageByRecipe(obj);
-        Long count = likeService.countByRecipe(obj);
-        RecipeSimpleDto dto = modelMapper.map(obj, RecipeSimpleDto.class);
-        dto.setCount(count);
-        majorImage.ifPresent(image -> {
-            dto.setImages(List.of(modelMapper.map(image, ImageDto.class)));
-        });
-        return dto;
-    }
+    // private RecipeSimpleDto convertToDto(Recipe obj) {
+    // Optional<Images> majorImage = imagesService.findMajorImageByRecipe(obj);
+    // Long count = likeService.countByRecipe(obj);
+    // RecipeSimpleDto dto = modelMapper.map(obj, RecipeSimpleDto.class);
+    // dto.setCount(count);
+    // majorImage.ifPresent(image -> {
+    // dto.setImages(List.of(modelMapper.map(image, ImageDto.class)));
+    // });
+    // return dto;
+    // }
 
     private RecipeSimpleDto convertToDtoLogued(Recipe obj, @RequestHeader("Authorization") String token) {
         Optional<Images> majorImage = imagesService.findMajorImageByRecipe(obj);
-
         Long count = likeService.countByRecipe(obj);
         RecipeSimpleDto dto = modelMapper.map(obj, RecipeSimpleDto.class);
         if (token != null && !token.isEmpty()) {

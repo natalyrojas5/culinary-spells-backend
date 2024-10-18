@@ -1,7 +1,7 @@
 package com.hechizos.culinarios.Services.Impl;
 
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import com.hechizos.culinarios.Models.Like;
 import com.hechizos.culinarios.Models.Recipe;
 import com.hechizos.culinarios.Models.User;
@@ -27,6 +27,14 @@ public class LikeImpl extends CrudImpl<Like, Long> implements LikeService {
 
     public long countByRecipe(Recipe recipe) {
         return likeRepository.countByRecipe(recipe);
+    }
+
+    public Long findMostLikedRecipe() {
+        return likeRepository.findMostLikedRecipe();
+    }
+
+    public List<Long> findMostLikedRecipes() {
+        return likeRepository.findMostLikedRecipes();
     }
 
 }

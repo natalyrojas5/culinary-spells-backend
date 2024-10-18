@@ -22,14 +22,17 @@ import com.hechizos.culinarios.Dto.RecipeDto;
 import com.hechizos.culinarios.Dto.RecipeSimpleDto;
 import com.hechizos.culinarios.Dto.StepsDto;
 import com.hechizos.culinarios.Exception.GenericResponseRecord;
+import com.hechizos.culinarios.Models.Country;
 import com.hechizos.culinarios.Models.Images;
 import com.hechizos.culinarios.Models.Like;
 import com.hechizos.culinarios.Models.Recipe;
 import com.hechizos.culinarios.Models.Steps;
 import com.hechizos.culinarios.Models.User;
+import com.hechizos.culinarios.Services.CountryService;
 import com.hechizos.culinarios.Services.ImagesService;
 import com.hechizos.culinarios.Services.LikeService;
 import com.hechizos.culinarios.Services.RecipeService;
+import com.hechizos.culinarios.Services.RecipeTypesService;
 import com.hechizos.culinarios.Services.StepsService;
 import com.hechizos.culinarios.Services.UserService;
 
@@ -46,6 +49,8 @@ public class RecipeController {
     private final StepsService stepsService;
     private final UserService userService;
     private final LikeService likeService;
+    private final RecipeTypesService recipeTypesService;
+    private final CountryService countryService;
     private final CloudinaryService cloudinaryService;
     @Qualifier("defaultMapper")
     private final ModelMapper modelMapper;
@@ -110,7 +115,16 @@ public class RecipeController {
     @GetMapping("/{id}")
     public ResponseEntity<GenericResponseRecord<RecipeDto>> readById(@PathVariable("id") Long id) throws Exception {
         Recipe recipe = recipeService.readById(id);
+        Long recipeTypeName = recipe.getRecipeTypes();
+        Country countryName = recipe.getUser().getCountry();
+        Long countryId = countryName.getIdCountry();
+        String countryNameStr = countryService.readById(countryId).getName();
+        Long count = likeService.countByRecipe(recipe);
+        String recipeTypeNameStr = recipeTypesService.readById(recipeTypeName).getName();
         RecipeDto recipeDto = convertToDtoR(recipe);
+        recipeDto.setRecipeTypeName(recipeTypeNameStr);
+        recipeDto.setCount(count);
+        recipeDto.getUser().setCountryName(countryNameStr);
         List<RecipeDto> recipeDtoList = new ArrayList<>();
         recipeDtoList.add(recipeDto);
         return ResponseEntity.ok(new GenericResponseRecord<>(200, "success", new ArrayList<>(recipeDtoList)));

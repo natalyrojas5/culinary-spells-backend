@@ -21,11 +21,13 @@ public class RecipeDto {
 
     private String detail;
 
-    private Integer score;
+    private Long count;
 
     private String cookingTime;
 
     private Long recipeTypes;
+
+    private String recipeTypeName;
 
     private UserDto user;
 

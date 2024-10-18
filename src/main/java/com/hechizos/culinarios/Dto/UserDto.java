@@ -23,9 +23,7 @@ public class UserDto {
 
     private Long idCountry;
 
+    private String countryName;
+
     private Integer gender;
-
-    private String createdAt;
-
-    private String updatedAt;
 }

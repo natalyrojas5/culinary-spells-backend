@@ -9,4 +9,5 @@ public interface LikeService extends ICrud<Like, Long> {
     Like findByRecipeAndUser(Recipe recipe, User user);
 
     long countByRecipe(Recipe recipe);
+
 }

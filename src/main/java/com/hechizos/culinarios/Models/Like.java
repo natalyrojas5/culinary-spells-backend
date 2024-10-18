@@ -1,7 +1,5 @@
 package com.hechizos.culinarios.Models;
 
-import org.hibernate.annotations.DynamicUpdate;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

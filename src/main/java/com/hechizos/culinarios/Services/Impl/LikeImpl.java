@@ -7,11 +7,7 @@ import com.hechizos.culinarios.Models.Recipe;
 import com.hechizos.culinarios.Models.User;
 import com.hechizos.culinarios.Repositories.GenericRepository;
 import com.hechizos.culinarios.Repositories.LikeRepository;
-import com.hechizos.culinarios.Repositories.RecipeRepository;
-import com.hechizos.culinarios.Repositories.UserRepository;
 import com.hechizos.culinarios.Services.LikeService;
-
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -32,4 +28,5 @@ public class LikeImpl extends CrudImpl<Like, Long> implements LikeService {
     public long countByRecipe(Recipe recipe) {
         return likeRepository.countByRecipe(recipe);
     }
+
 }

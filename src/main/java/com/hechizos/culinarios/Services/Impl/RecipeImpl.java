@@ -6,7 +6,7 @@ import com.hechizos.culinarios.Models.User;
 import com.hechizos.culinarios.Repositories.GenericRepository;
 import com.hechizos.culinarios.Repositories.RecipeRepository;
 import com.hechizos.culinarios.Services.RecipeService;
-import java.util.List;
+import java.util.*;
 import lombok.RequiredArgsConstructor;
 
 @Service

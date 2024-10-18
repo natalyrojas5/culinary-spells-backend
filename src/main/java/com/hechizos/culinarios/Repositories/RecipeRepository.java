@@ -7,4 +7,5 @@ import java.util.List;
 public interface RecipeRepository extends GenericRepository<Recipe, Long> {
 
     List<Recipe> findByUser(User user);
+
 }

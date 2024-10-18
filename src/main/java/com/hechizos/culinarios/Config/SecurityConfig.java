@@ -65,6 +65,7 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher("/recipe/all")).permitAll()
                         .requestMatchers(antMatcher("/recipe/top-recipe")).permitAll()
                         .requestMatchers(antMatcher("/recipe/top-recipes")).permitAll()
+                        .requestMatchers(antMatcher("/password/*")).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint))

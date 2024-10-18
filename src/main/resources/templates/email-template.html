@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recupera tu Contraseña</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #200543;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .header-name {
+            max-width: 100px;
+        }
+
+        .header img {
+            max-width: 80px;
+        }
+
+        .content {
+            text-align: justify;
+            padding: 40px 70px;
+            background: linear-gradient(180deg, #380776 0%, #240749 100%);
+            color: white
+        }
+
+        .divisor {
+            background: #FFBB0B;
+            height: 5px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background-color: #6a1b9a;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #777777;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <table class="container" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td class="header">
+                <img src="https://res.cloudinary.com/djprqhosn/image/upload/v1729112975/eqefm4eboqjhjbv5komn.png"
+                    alt="Hechizos" style="max-width: 175px;">
+            </td>
+        </tr>
+        <tr>
+            <td class="divisor">
+            </td>
+        </tr>
+        <tr>
+            <td class="content">
+                <h1 style="text-align:center;color:white;font-size: 25px;font-weight: 600;padding-bottom:20px">Recupera
+                    tu Contraseña</h1>
+                <p>Hola </p><span th:text="${userName}"></span>
+                <p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta en Hechizos Culinarios.</p>
+                <p>Haz clic en el siguiente enlace para establecer una nueva contraseña:</p>
+                <a th:href="@{${url}}" style="text-decoration: none; color:#FFBB0B;font-weight: 600;">Establecer nueva
+                    contraseña</a>
+                <p style="padding-bottom: 10px;">Si no has solicitado restablecer tu contraseña, puedes ignorar este
+                    correo. No se realizará ningún cambio en tu cuenta.</p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

@@ -9,4 +9,6 @@ public interface UserRepository extends GenericRepository<User, Long> {
     List<User> findByEmailLike(String email);
 
     User findByIdUser(Long idUser);
+
+    User findByTokenPassword(String token);
 }

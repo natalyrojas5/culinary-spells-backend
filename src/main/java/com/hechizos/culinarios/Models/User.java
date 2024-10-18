@@ -59,6 +59,9 @@ public class User {
     @NotNull(message = "Debe seleccionar un género")
     private Integer gender;
 
+    @Column(name = "token_password", length = 200, nullable = true)
+    private String tokenPassword;
+
     @Column(name = "created_at", nullable = true)
     @CreationTimestamp(source = SourceType.DB)
     private Timestamp createdAt;

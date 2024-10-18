@@ -35,4 +35,9 @@ public class UserImpl extends CrudImpl<User, Long> implements UserService {
     public User findByIdUser(Long idUser) {
         return userRepository.findByIdUser(idUser);
     }
+
+    @Override
+    public User findByTokenPassword(String token) {
+        return userRepository.findByTokenPassword(token);
+    }
 }

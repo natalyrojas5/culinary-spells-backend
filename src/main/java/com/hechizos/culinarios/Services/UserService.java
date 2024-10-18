@@ -10,4 +10,6 @@ public interface UserService extends ICrud<User, Long> {
     List<User> findByEmailLike(String email);
 
     User findByIdUser(Long idUser);
+
+    User findByTokenPassword(String token);
 }

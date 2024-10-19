@@ -8,5 +8,20 @@
     "name": "mail.urlFront",
     "type": "java.lang.String",
     "description": "A description for 'mail.urlFront'"
+  },
+  {
+    "name": "cloudinary.cloudName",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.cloudName'"
+  },
+  {
+    "name": "cloudinary.apiSecret",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.apiSecret'"
+  },
+  {
+    "name": "cloudinary.apiKey",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.apiKey'"
   }
 ]}

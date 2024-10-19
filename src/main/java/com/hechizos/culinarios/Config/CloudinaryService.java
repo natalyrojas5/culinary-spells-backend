@@ -1,11 +1,14 @@
 package com.hechizos.culinarios.Config;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,19 +22,28 @@ public class CloudinaryService {
 
     Cloudinary cloudinary;
 
-    private Map<String, String> valuesMap = new HashMap<>();
+    @Value("${cloudinary.cloudName}")
+    private String cloudName;
+    @Value("${cloudinary.apiKey}")
+    private String apiKey;
 
-    public CloudinaryService() {
-        valuesMap.put("cloud_name", "djprqhosn");
-        valuesMap.put("api_key", "969389158697739");
-        valuesMap.put("api_secret", "z_V9aTNxeBQpNg5otjC9OIRUiak");
-        cloudinary = new Cloudinary(valuesMap);
+    @Value("${cloudinary.apiSecret}")
+    private String apiSecret;
+
+    @PostConstruct
+    public void init() {
+        cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret));
     }
 
     @SuppressWarnings("rawtypes")
     public Map upload(MultipartFile multipartFile) throws IOException {
         File file = convert(multipartFile);
-        Map result = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+        Map<String, Object> options = ObjectUtils.asMap(
+                "transformation", new Transformation().named("assetlogos"));
+        Map result = cloudinary.uploader().upload(file, options);
         file.delete();
         return result;
     }

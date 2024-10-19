@@ -13,4 +13,5 @@ public class RecipeTypesDto {
 
     private Long idRecipeType;
     private String name;
+    private String detail;
 }

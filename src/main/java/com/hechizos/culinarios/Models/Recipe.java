@@ -52,7 +52,6 @@ public class Recipe {
     private Timestamp createdAt;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    @NotNull(message = "Debe agregar al menos una imagen")
     private List<Images> images;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)

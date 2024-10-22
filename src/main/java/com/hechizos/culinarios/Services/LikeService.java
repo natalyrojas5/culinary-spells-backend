@@ -15,4 +15,6 @@ public interface LikeService extends ICrud<Like, Long> {
 
     List<Long> findMostLikedRecipes();
 
+    Boolean existsBy();
+
 }

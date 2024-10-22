@@ -23,6 +23,7 @@ import com.hechizos.culinarios.Auth.JwtResponse;
 import com.hechizos.culinarios.Auth.JwtTokenUtil;
 import com.hechizos.culinarios.Dto.UserDto;
 import com.hechizos.culinarios.Models.User;
+import com.hechizos.culinarios.Services.LikeService;
 import com.hechizos.culinarios.Services.UserService;
 
 @RestController
@@ -35,6 +36,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
+    private final LikeService likeService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -68,7 +70,16 @@ public class AuthController {
     }
 
     private UserDto convertToDto(User obj) {
-        return modelMapper.map(obj, UserDto.class);
+        UserDto userDto = modelMapper.map(obj, UserDto.class);
+
+        Boolean existRegister = likeService.existsBy();
+        if (existRegister != null && existRegister) {
+            userDto.setFeaturedRecipesExist(true);
+        } else {
+            userDto.setFeaturedRecipesExist(false);
+        }
+
+        return userDto;
     }
 
     private User convertToEntity(UserDto dto) {

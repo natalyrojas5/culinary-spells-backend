@@ -16,4 +16,6 @@ public interface LikeRepository extends GenericRepository<Like, Long> {
 
     @Query(value = "SELECT idrecipe FROM likes GROUP BY idrecipe ORDER BY COUNT(*) DESC LIMIT 2", nativeQuery = true)
     List<Long> findMostLikedRecipes();
+
+    Boolean existsBy();
 }

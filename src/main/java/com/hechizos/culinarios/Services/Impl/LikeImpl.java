@@ -37,4 +37,8 @@ public class LikeImpl extends CrudImpl<Like, Long> implements LikeService {
         return likeRepository.findMostLikedRecipes();
     }
 
+    public Boolean existsBy() {
+        return likeRepository.existsBy();
+    }
+
 }

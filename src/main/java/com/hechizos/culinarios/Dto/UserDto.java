@@ -24,4 +24,6 @@ public class UserDto {
     private String countryName;
 
     private Integer gender;
+
+    private Boolean featuredRecipesExist;
 }

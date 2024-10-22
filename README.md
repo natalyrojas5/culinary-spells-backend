@@ -41,7 +41,7 @@ El proyecto utiliza **Spring Security** y **JWT** para manejar la autenticación
 - **Servicios (Services)**: Contienen la lógica del negocio.
 - **Repositorios (Repositories)**: Gestionan el acceso a la base de datos utilizando JPA.
 
-## 🗂️ Estructura del Proyect
+## 🗂️ Estructura del Proyecto
 
 ```bash
 📁 src/
